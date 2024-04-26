@@ -1,0 +1,14 @@
+.rowInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deleteBtn {
+    width: 1rem;
+    height: 1rem;
+    background-position: center;
+    background-size: cover;
+    background-image: url("../public/calendar-xmark-regular.svg");
+    cursor: pointer;
+}
