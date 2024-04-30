@@ -4,7 +4,7 @@ import RowInfo from "./rowInfo.tsx";
 import dateFormat from "dateformat"
 
 
-const dateNow: string = dateFormat(new Date(), "dd.mm.yy").toString();
+const dateNow: string = dateFormat(new Date(), "yyyy-mm-dd").toString();
 
 class App extends Component {
     state: {
@@ -21,9 +21,10 @@ class App extends Component {
 
     onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        // @ts-ignore
-        const formData = new FormData(e.target)
-        const date = Object.fromEntries(formData).date.toString()
+
+        const formData = new FormData(e.currentTarget)
+        const dateFromForm = Object.fromEntries(formData).date.toString().split("-")
+        const date = [dateFromForm[2], dateFromForm[1], dateFromForm[0]].join(".")
         const distance = parseInt(Object.fromEntries(formData).distance.toString())
 
         if (this.state.dates.length !== 0 && this.state.dates.includes(date)) {
@@ -70,9 +71,9 @@ class App extends Component {
                 <div className="wrp">
                     <form onSubmit={this.onFormSubmit.bind(this)} autoComplete="off">
                         <div className="inputWrp">
-                            <label htmlFor="date">Дата (ДД.ММ.ГГ)</label>
-                            <input name="date" pattern={"[0-9]{2}.[0-9]{2}.[0-9]{2}"} value={this.state.inputDateValue}
-                                   onChange={this.onChangeInput.bind(this)} required/>
+                            <label htmlFor="date">Дата (ДД.ММ.ГГГГ)</label>
+                            <input type="date" name="date" value={this.state.inputDateValue}
+                                   onChange={this.onChangeInput.bind(this)} max={dateNow} required/>
                         </div>
                         <div className="inputWrp">
                             <label htmlFor="distance">Пройдено км</label>
@@ -84,7 +85,7 @@ class App extends Component {
                     </form>
                     <div className="tableInfo">
                         <div className="columnNameWrp">
-                            <span className="columnName">Дата (ДД.ММ.ГГ)</span>
+                            <span className="columnName">Дата (ДД.ММ.ГГГГ)</span>
                             <span className="columnName">Пройдено км</span>
                             <span className="columnName">Действия</span>
                         </div>
